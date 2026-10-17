@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log in - CampusCare</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="auth-page">
+  <main class="auth-form">
+    <h1>Welcome to CampusCare</h1>
+    <p>Log in to your account</p>
+
+    <% if (success) { %><div class="alert alert-success" role="status"><%= success %></div><% } %>
+    <% if (error) { %><div class="alert alert-error" role="alert"><%= error %></div><% } %>
+
+    <form method="POST" action="/login">
+      <label for="role">Log in as</label>
+      <select id="role" name="role" required>
+        <option value="requester" <%= form.role === 'requester' ? 'selected' : '' %>>Requester</option>
+        <option value="technician" <%= form.role === 'technician' ? 'selected' : '' %>>Technician</option>
+        <option value="admin" <%= form.role === 'admin' ? 'selected' : '' %>>Admin</option>
+      </select>
+
+      <label for="email">Email</label>
+      <input id="email" type="email" name="email" placeholder="you@campus.edu" value="<%= form.email || '' %>" required>
+
+      <label for="password">Password</label>
+      <input id="password" type="password" name="password" required>
+
+      <button type="submit">Log in</button>
+    </form>
+
+    <p>No account yet? <a href="/signup">Sign up</a></p>
+  </main>
+</body>
+</html>
