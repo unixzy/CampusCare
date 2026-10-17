@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign up - CampusCare</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="auth-page">
+  <main class="auth-form">
+    <h1>Join CampusCare</h1>
+    <p>Choose how you will use the system</p>
+
+    <% if (errors.length) { %>
+      <div class="alert alert-error" role="alert">
+        <ul>
+          <% errors.forEach(function (e) { %><li><%= e %></li><% }) %>
+        </ul>
+      </div>
+    <% } %>
+
+    <form method="POST" action="/signup">
+      <fieldset>
+        <legend>I am a</legend>
+        <label><input type="radio" name="role" value="requester" <%= form.role !== 'technician' ? 'checked' : '' %>> Requester</label>
+        <label><input type="radio" name="role" value="technician" <%= form.role === 'technician' ? 'checked' : '' %>> Technician</label>
+      </fieldset>
+
+      <label for="name">Full name</label>
+      <input id="name" type="text" name="name" value="<%= form.name || '' %>" required>
+
+      <label for="email">Email</label>
+      <input id="email" type="email" name="email" value="<%= form.email || '' %>" required>
+
+      <label for="specialty">Specialty (technicians only)</label>
+      <input id="specialty" type="text" name="specialty" placeholder="For example Electrical" value="<%= form.specialty || '' %>">
+
+      <label for="password">Password</label>
+      <input id="password" type="password" name="password" minlength="8" required>
+
+      <label for="confirm_password">Confirm password</label>
+      <input id="confirm_password" type="password" name="confirm_password" minlength="8" required>
+
+      <p class="note">Technician accounts become active after an administrator approves them.</p>
+
+      <button type="submit">Create account</button>
+    </form>
+
+    <p>Already have an account? <a href="/login">Log in</a></p>
+  </main>
+</body>
+</html>
