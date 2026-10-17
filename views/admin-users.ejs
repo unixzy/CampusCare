@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manage users - CampusCare</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <nav aria-label="Admin">
+      <a href="/admin/dashboard">Dashboard</a>
+      <a href="/admin/users">Manage Users</a>
+      <span><%= user.name %> (<%= user.role %>)</span>
+      <form method="POST" action="/logout" style="display:inline">
+        <button type="submit">Log out</button>
+      </form>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Manage users</h1>
+
+    <% if (message) { %><div class="alert" role="status"><%= message %></div><% } %>
+
+    <nav aria-label="Filter users">
+      <a href="/admin/users?filter=all" <%= filter === 'all' ? 'aria-current="page"' : '' %>>All</a>
+      <a href="/admin/users?filter=technicians" <%= filter === 'technicians' ? 'aria-current="page"' : '' %>>Technicians</a>
+      <a href="/admin/users?filter=pending" <%= filter === 'pending' ? 'aria-current="page"' : '' %>>Pending approval (<%= pendingCount %>)</a>
+    </nav>
+
+    <table>
+      <thead>
+        <tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Action</th></tr>
+      </thead>
+      <tbody>
+        <% if (users.length === 0) { %>
+          <tr><td colspan="5">No users found.</td></tr>
+        <% } %>
+        <% users.forEach(function (u) { %>
+          <tr>
+            <td><%= u.name %></td>
+            <td><%= u.email %></td>
+            <td><%= u.role %><%= u.specialty ? ' (' + u.specialty + ')' : '' %></td>
+            <td><span class="badge badge-<%= u.status %>"><%= u.status === 'pending' ? 'Pending approval' : u.status.charAt(0).toUpperCase() + u.status.slice(1) %></span></td>
+            <td>
+              <% if (u.id === user.id) { %>
+                You
+              <% } else if (u.role === 'admin') { %>
+                -
+              <% } else if (u.status === 'pending') { %>
+                <form method="POST" action="/admin/users/<%= u.id %>/approve"><button type="submit">Approve</button></form>
+              <% } else if (u.status === 'active') { %>
+                <form method="POST" action="/admin/users/<%= u.id %>/deactivate"><button type="submit">Deactivate</button></form>
+              <% } else { %>
+                <form method="POST" action="/admin/users/<%= u.id %>/reactivate"><button type="submit">Reactivate</button></form>
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>

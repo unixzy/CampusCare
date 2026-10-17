@@ -37,6 +37,7 @@ app.use('/', require('./routes/auth'));
 app.use('/requester', requireRole('requester'), require('./routes/requester'));
 app.use('/technician', requireRole('technician'), require('./routes/technician'));
 app.use('/admin', requireRole('admin'), require('./routes/admin'));
+app.use('/admin/users', requireRole('admin'), require('./routes/adminUsers'));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`CampusCare running at http://localhost:${PORT}`));
